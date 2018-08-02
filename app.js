@@ -22,6 +22,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(root, express.static(path.join(__dirname, 'public')));
 
+app.use('*/robots.txt', function(req, res, next){
+  res.end('User-agent: *\nDisallow: /');
+  next();
+});
+
 app.use(root + '*', function(req, res, next){
   res.locals.root = root;
   res.locals.clientIp = clientIp(req);
