@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    form(name='1stform' action='/whois-domain' method='post')
+      .columns
+        .column.is-10
+          label.label(for='') Domain name:
+          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' placeholder='Domain name' autofocus='')
+        .column.is-2
+          label.label.is-invisible(for='') Submit
+          input.button.is-warning.is-inverted.is-pulled-right(type='submit' value='Check')
+    .section
+    #result.notification.is-dark.has-text-centered
+        if error != null
+            span.has-text-danger The form must be filled out!
+        if input != null
+            span #{input.address} is 
+                if stt
+                    span.has-text-success Up
+                else
+                    span.has-text-danger Down
+        

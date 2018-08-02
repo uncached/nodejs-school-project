@@ -1,0 +1,27 @@
+doctype html
+
+include header
+
+.container.is-desktop.box.notification.is-dark
+  .title
+    h1 FavKit.com
+  h2 A favorite toolkit I would like to share with you guys
+
+include client-info
+
+.container.notification.box.has-background-grey-darker
+  .tile.is-ancestor
+    .tile.is-2.is-vertical.is-parent
+      .title.is-child
+    .tile.is-8.is-vertical.is-parent
+      .title.is-child.box.notification.has-background-grey-lighter
+        h3.title= tool_name
+        .subtitle
+          p= tool_des
+        .subtitle
+          block content
+    .tile.is-2.is-vertical.is-parent
+      .title.is-child
+nav.notification.is-dark
+  center Copyright
+script(src='/javascripts/script.js')

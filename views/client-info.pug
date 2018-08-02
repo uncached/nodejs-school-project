@@ -1,0 +1,8 @@
+.container.notification.is-dark
+  .subtitle
+    center
+      | Your IP address is #{clientIp}
+      br
+      |   You are using 
+      script.
+        document.write(platform.name + ' ' + platform.version + '. Check out latest version <a href="https://www.google.com/search?q=latest+version+of+' + platform.name + '" target="_blank">here</a>')
