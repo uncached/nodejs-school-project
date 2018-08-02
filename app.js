@@ -10,7 +10,7 @@ var websitecheckRouter = require('./routes/website-check');
 var whoisdomainRouter = require('./routes/whois-domain');
 
 var app = express();
-var root = '/favkit/';
+const root = '/favkit/';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -20,7 +20,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(root, express.static(path.join(__dirname, 'public')));
 
 app.use(root + '*', function(req, res, next){
   res.locals.root = root;
