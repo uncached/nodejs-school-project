@@ -26,11 +26,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/robots.txt', function(req, res, next){
-  res.send('robots.txt');
-  next();
-});
-
 app.use('/*', function(req, res, next){
   res.locals.clientIp = clientIp(req);
   next();
