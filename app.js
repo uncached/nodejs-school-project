@@ -10,11 +10,7 @@ var websitecheckRouter = require('./routes/website-check');
 var whoisdomainRouter = require('./routes/whois-domain');
 
 var app = express();
-
-
-
-const NodeCache = require( "node-cache" );
-const myCache = new NodeCache();
+var root = '/favkit/';
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,12 +22,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/*', function(req, res, next){
+app.use(root + '*', function(req, res, next){
+  res.locals.root = root;
   res.locals.clientIp = clientIp(req);
   next();
 });
-
-var root = '/';
 
 app.use(root, indexRouter);
 app.use(root + 'port-check', portcheckRouter);
