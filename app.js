@@ -31,10 +31,12 @@ app.use('/*', function(req, res, next){
   next();
 });
 
-app.use('/', indexRouter);
-app.use('/port-check', portcheckRouter);
-app.use('/website-check', websitecheckRouter);
-app.use('/whois-domain', whoisdomainRouter);
+var root = '/';
+
+app.use(root, indexRouter);
+app.use(root + 'port-check', portcheckRouter);
+app.use(root + 'website-check', websitecheckRouter);
+app.use(root + 'whois-domain', whoisdomainRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
