@@ -1,21 +1,47 @@
 extends layout
 
 block content
-    form(name='1stform' action=root+'website-check' method='post')
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script.
+      function getVal() {
+      var x = document.getElementById("address").value;
+      if (x) {
+        var valid = !(RegExp("[a-zA-Z0-9.-]*").test(x)==false||x.indexOf(".")==-1||x.indexOf(".")==0||x.lastIndexOf(".")==x.length-1||x.indexOf("..")!=-1);
+        if (!valid) {
+          document.getElementById("result").innerHTML = 'The input is invalid!';
+          document.getElementById("submit").classList.add("is-invisible");
+        }
+        else {
+          document.getElementById("submit").classList.remove("is-invisible");
+          document.getElementById("result").innerHTML = x + ' is ?';
+        }
+      }
+      return valid;
+      }
+      
+      $(document).ready(function() {
+      $(window).keydown(function(event){
+      if( (event.keyCode == 13) && (getVal() == false) ) {
+      event.preventDefault();
+      return false;
+      }
+      });
+      });
+
+    form(id='1stform' action=root+'website-check' method='post')
       .columns
         .column.is-10
-          label.label(for='') Domain name:
-          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' placeholder='Domain name' autofocus='')
+          label.label(for='') Domain name / IP address:
+          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' placeholder='Domain name / IP address' autofocus='' required)
         .column.is-2
           label.label.is-invisible(for='') Submit
-          input.button.is-warning.is-inverted.is-pulled-right(type='submit' value='Check')
+          input#submit.button.is-warning.is-inverted.is-pulled-right(type='submit' value='Check')
     .section
     #result.notification.is-dark.has-text-centered
-        if error != null
-            span.has-text-danger The form must be filled out!
         if input != null
             span #{input.address} is 
-                if stt
+                if stt != null
                     span.has-text-success Up
                 else
                     span.has-text-danger Down

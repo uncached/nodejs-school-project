@@ -1,0 +1,70 @@
+extends layout
+
+block content
+
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script.
+      function getVal() {
+      var x = document.getElementById("address").value;
+      if (x) {
+        var valid = !(RegExp("[a-zA-Z0-9.-]*").test(x)==false||x.indexOf(".")==-1||x.indexOf(".")==0||x.lastIndexOf(".")==x.length-1||x.indexOf("..")!=-1);
+        if (!valid) {
+          document.getElementById("result").innerHTML = 'The input is invalid!';
+          document.getElementById("submit").classList.add("is-invisible");
+        }
+        else {
+          document.getElementById("submit").classList.remove("is-invisible");
+          document.getElementById("result").innerHTML = x + ' is ?';
+        }
+      }
+      return valid;
+      }
+      
+      $(document).ready(function() {
+      $(window).keydown(function(event){
+      if( (event.keyCode == 13) && (getVal() == false) ) {
+      event.preventDefault();
+      return false;
+      }
+      });
+      });
+
+    form(id='1stform' action=root+'ip-info' method='post')
+      .columns
+        .column.is-10
+          label.label(for='') Domain name / IP address:
+          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' placeholder='Domain name / IP address' autofocus='')
+        .column.is-2
+          label.label.is-invisible(for='') Submit
+          input#submit.button.is-warning.is-inverted.is-pulled-right(type='submit' value='Check')
+    .section
+    #result.notification.is-dark.has-text-centered
+        if ipinfo != null
+          script.
+            var obj = JSON.parse("#{ipinfo}".replace(/&quot;/g,'"'));
+            console.log(typeof obj.OrgName);
+            console.log(typeof obj.Address[0]);
+            console.log(obj.Address.length);
+            var ipinfo = "Provider name: ";
+            ipinfo+= prtInfo(obj.OrgName);
+            ipinfo+= "<br>Address: ";
+            ipinfo+= prtAddr(obj);
+            document.getElementById("result").classList.remove("has-text-centered");
+            document.getElementById("result").classList.add("has-text-lefted");
+            document.getElementById("result").innerHTML = ipinfo;
+            
+            function prtInfo(data) {
+            if (typeof(data) === 'object') return data.join(' / ');
+            else return data;
+            }
+            
+            function prtAddr(obj) {
+              if (typeof(obj.Address) === 'object') {
+              var out=[];
+              for (var i=0; i<obj.Address.length; i++) {
+              out[i] = obj.Address[i] + ', ' + obj.City[i] + ', ' + obj.Country;
+              }
+              return out;
+              }
+              else return obj.Address + ', ' + obj.City + ', ' + obj.Country;
+              }

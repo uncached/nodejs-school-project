@@ -3,14 +3,41 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var portcheckRouter = require('./routes/port-check');
 var websitecheckRouter = require('./routes/website-check');
-var whoisdomainRouter = require('./routes/whois-domain');
+// var whoisdomainRouter = require('./routes/whois-domain');
+var htmltopugRouter = require('./routes/html-to-pug');
+// var ipinfoRouter = require('./routes/ip-info');
 
 var app = express();
+
 const root = '/favkit/';
+
+//limit request size
+app.use(bodyParser.urlencoded({ extended: false, limit: '800kb' }));
+
+//prevent ddos
+const { RateLimiterMemory } = require('rate-limiter-flexible');
+const rateLimiter = new RateLimiterMemory(
+{
+  points: 8,
+  duration: 1,
+});
+const rateLimiterRule = (req, res, next) => {
+  res.locals.root = root;
+  res.locals.clientIp = clientIp(req);
+  rateLimiter.consume(clientIp, 1)
+    .then(() => {
+      next();
+    })
+    .catch((rateLimiterRes) => {
+      res.status(429).send('Too Many Requests');
+    });
+};
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,21 +49,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(root, express.static(path.join(__dirname, 'public')));
 
-app.use('*/robots.txt', function(req, res, next){
-  res.end('User-agent: *\nDisallow: /');
-  next();
+app.use(root + 'robots.txt$', function(req, res){
+  res.sendFile(__dirname + "/" + "robots.txt");
 });
 
-app.use(root + '*', function(req, res, next){
-  res.locals.root = root;
-  res.locals.clientIp = clientIp(req);
-  next();
-});
+app.use(root + '*', rateLimiterRule);
 
 app.use(root, indexRouter);
 app.use(root + 'port-check', portcheckRouter);
 app.use(root + 'website-check', websitecheckRouter);
-app.use(root + 'whois-domain', whoisdomainRouter);
+// app.use(root + 'whois-domain', whoisdomainRouter);
+// app.use(root + 'ip-info', ipinfoRouter);
+app.use(root + 'html-to-pug', htmltopugRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

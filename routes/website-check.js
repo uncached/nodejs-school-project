@@ -8,10 +8,10 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res) {
-    if (req.body.address=='') res.render('website-check', { title: 'Website check', tool_name: 'Website check tool', tool_des: 'Check if a website is down or not', error: true });
+    if (req.body.address=='') res.send(304);
     else isPortReachable(80, {host: req.body.address}).then(reachable => {
 	console.log(reachable);
-	var stt = false;
+	var stt;
 	if (reachable) stt=true;
     res.render('website-check', { title: 'Website check', tool_name: 'Website check tool', tool_des: 'Check if a website is down or not', input: req.body, stt: stt });
     });

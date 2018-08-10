@@ -1,0 +1,54 @@
+extends layout
+
+block content
+  
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+  form(name='1stform' action=root+'html-to-pug' method='post')
+    #editor-input
+    textarea.is-invisible(name='htmlInput')
+    br
+    .buttons.has-addons.is-centered
+        input#submit.button.is-warning.is-inverted(type='submit' value='Convert')
+  br      
+  #editor-output
+  
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js')
+  script.
+    const editorInput = ace.edit("editor-input");
+    editorInput.setTheme("ace/theme/monokai");
+    editorInput.setShowPrintMargin(false);
+    editorInput.getSession().setMode("ace/mode/html");
+    editorInput.setOptions({
+      maxLines: Infinity,
+      minLines: 32
+      });
+    
+    var textarea = $('textarea[name="htmlInput"]');
+    editorInput.getSession().on("change", function () {
+    textarea.val(editorInput.getSession().getValue());
+    });
+    
+  if pugOutput
+    script.
+      const editorOutput = ace.edit("editor-output");
+      editorOutput.setTheme("ace/theme/monokai");
+      editorOutput.setShowPrintMargin(false);
+      editorOutput.getSession().setMode("ace/mode/jade");
+      editorOutput.$blockScrolling = Infinity;
+      editorOutput.setValue(atob("" + "#{pugOutput}"), 1);
+      editorOutput.setReadOnly(true);
+      editorOutput.setOptions({
+      maxLines: Infinity,
+      minLines: 1
+      });
+      
+      function copyText() {
+      editorOutput.selectAll();
+      editorOutput.focus();
+      document.execCommand("copy");
+      }
+
+      
+    br
+    .buttons.has-addons.is-centered
+        button#clipboard.button.is-warning.is-inverted(onclick="copyText()") Copy the pug code to clipboard
