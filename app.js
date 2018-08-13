@@ -72,18 +72,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 //#begin limit request when overloaded
-const protectCfg = {
-  production: process.env.NODE_ENV === 'production', // if production is false, detailed error messages are exposed to the client
-  clientRetrySecs: 1, // Client-Retry header, in seconds (0 to disable) [default 1]
-  sampleInterval: 5, // sample rate, milliseconds [default 5]
-  maxEventLoopDelay: 42, // maximum detected delay between event loop ticks [default 42]
-  maxHeapUsedBytes: 0, // maximum heap used threshold (0 to disable) [default 0]
-  maxRssBytes: 0, // maximum rss size threshold (0 to disable) [default 0]
-  errorPropagationMode: false // dictate behavior: take over the response 
-                              // or propagate an error to the framework [default false]
-}
-const protect = require('overload-protection')('express', protectCfg);
-app.use(protect);
+// const protectCfg = {
+//   production: process.env.NODE_ENV === 'production', // if production is false, detailed error messages are exposed to the client
+//   clientRetrySecs: 1, // Client-Retry header, in seconds (0 to disable) [default 1]
+//   sampleInterval: 5, // sample rate, milliseconds [default 5]
+//   maxEventLoopDelay: 42, // maximum detected delay between event loop ticks [default 42]
+//   maxHeapUsedBytes: 0, // maximum heap used threshold (0 to disable) [default 0]
+//   maxRssBytes: 0, // maximum rss size threshold (0 to disable) [default 0]
+//   errorPropagationMode: false // dictate behavior: take over the response 
+//                               // or propagate an error to the framework [default false]
+// }
+// const protect = require('overload-protection')('express', protectCfg);
+// app.use(protect);
 //#end limit request when overloaded
 
 app.use(logger('dev'));
