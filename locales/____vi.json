@@ -1,0 +1,15 @@
+{
+	"your-ip-address-is": "Địa chỉ IP của bạn là",
+	"you-are-using": "Bạn đang sử dụng",
+	"check-out-latest-version": "Kiểm tra phiên bản mới nhất",
+	"here": "tại đây",
+	"Check": "Kiểm tra",
+	"Minify": "Rút gọn",
+	"Unminify": "Khôi phục",
+	
+	"port-check-title": "Kiểm tra cổng",
+	"port-check-name": "Công cụ kiểm tra cổng",
+	"port-check-description": "Kiểm tra trạng thái đóng mở của 1 cổng TCP bất kì",
+	"domain-name-ip-address": "Tên miền / Địa chỉ IP",
+	"Port": "Cổng"
+}

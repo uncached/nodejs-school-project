@@ -7,16 +7,15 @@ block content
   .level.is-invisible
   .columns
     .column.is-6
-      form(name='1stform' action=root+'html-to-pug' method='post')
+      form(name='1stform' action=root+'html-unminifier' method='post')
         textarea.is-invisible(name='dataInput')
         .buttons.has-addons.is-pulled-left
-          input#submit.button.is-warning.is-inverted(type='submit' value='Convert')
+          input#submit.button.is-warning.is-inverted(type='submit' value='Unminify')
     .column.is-6
       if dataOutput
         .buttons.has-addons.is-pulled-right
           button#clipboard.button.is-warning.is-inverted(onclick="copyText()") Copy it to clipboard
   .level.is-invisible
-  #editor-output
   
   script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js')
   script.
@@ -35,23 +34,14 @@ block content
     });
     
   if dataOutput
+    .field
+      .control
+        textarea#output.textarea.is-primary(type='text' placeholder='' readonly) #{dataOutput}
+    
     script.
-      const editorOutput = ace.edit("editor-output");
-      editorOutput.setTheme("ace/theme/monokai");
-      editorOutput.setShowPrintMargin(false);
-      editorOutput.getSession().setMode("ace/mode/jade");
-      editorOutput.$blockScrolling = Infinity;
-      editorOutput.setValue(atob("#{dataOutput}"), 1);
-      editorOutput.setReadOnly(true);
-      editorOutput.setOptions({
-      maxLines: Infinity,
-      minLines: 1
-      });
-      
       function copyText() {
+      var textarea = document.getElementById("output");
       document.getElementById('clipboard').innerHTML="Copied!";
-      editorOutput.selectAll();
-      editorOutput.focus();
+      textarea.select();
       document.execCommand("copy");
       }
-

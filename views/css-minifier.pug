@@ -1,0 +1,58 @@
+extends layout
+
+block content
+  
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+  #editor-input
+  .level.is-invisible
+  .columns
+    .column.is-6
+      form(name='1stform' action=root+'css-minifier' method='post')
+        textarea.is-invisible(name='dataInput')
+        .buttons.has-addons.is-pulled-left
+          input#submit.button.is-warning.is-inverted(type='submit' value='Compress')
+    .column.is-6
+      if dataOutput
+        .buttons.has-addons.is-pulled-right
+          button#clipboard.button.is-warning.is-inverted(onclick="copyText()") Copy it to clipboard
+  .level.is-invisible
+  if error
+    .notification.is-dark.has-text-centered.has-text-warning #{error}
+  if inputLength&&outputLength
+    #result.notification.is-dark.has-text-centered
+      span Original size: 
+      span.has-text-danger #{inputLength} 
+      span | Minified size: 
+      span.has-text-info #{outputLength} 
+      span => Savings: 
+      span.has-text-success #{inputLength-outputLength} (#{((inputLength-outputLength)/inputLength*100).toFixed(2)}%)
+    
+  
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.1/ace.js')
+  script.
+    const editorInput = ace.edit("editor-input");
+    editorInput.setTheme("ace/theme/monokai");
+    editorInput.setShowPrintMargin(false);
+    editorInput.getSession().setMode("ace/mode/css");
+    editorInput.setOptions({
+      maxLines: Infinity,
+      minLines: 32
+      });
+    
+    var textarea = $('textarea[name="dataInput"]');
+    editorInput.getSession().on("change", function () {
+    textarea.val(editorInput.getSession().getValue());
+    });
+    
+  if dataOutput
+    .field
+      .control
+        textarea#output.textarea.is-primary(type='text' placeholder='' readonly) #{dataOutput}
+    
+    script.
+        function copyText() {
+        var textarea = document.getElementById("output");
+        document.getElementById('clipboard').innerHTML="Copied!";
+        textarea.select();
+        document.execCommand("copy");
+        }

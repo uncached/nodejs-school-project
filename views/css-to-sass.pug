@@ -7,7 +7,7 @@ block content
   .level.is-invisible
   .columns
     .column.is-6
-      form(name='1stform' action=root+'html-to-pug' method='post')
+      form(name='1stform' action=root+'css-to-sass' method='post')
         textarea.is-invisible(name='dataInput')
         .buttons.has-addons.is-pulled-left
           input#submit.button.is-warning.is-inverted(type='submit' value='Convert')
@@ -23,7 +23,7 @@ block content
     const editorInput = ace.edit("editor-input");
     editorInput.setTheme("ace/theme/monokai");
     editorInput.setShowPrintMargin(false);
-    editorInput.getSession().setMode("ace/mode/html");
+    editorInput.getSession().setMode("ace/mode/css");
     editorInput.setOptions({
       maxLines: Infinity,
       minLines: 32
@@ -39,9 +39,9 @@ block content
       const editorOutput = ace.edit("editor-output");
       editorOutput.setTheme("ace/theme/monokai");
       editorOutput.setShowPrintMargin(false);
-      editorOutput.getSession().setMode("ace/mode/jade");
+      editorOutput.getSession().setMode("ace/mode/sass");
       editorOutput.$blockScrolling = Infinity;
-      editorOutput.setValue(atob("#{dataOutput}"), 1);
+      editorOutput.setValue("#{dataOutput}", 1);
       editorOutput.setReadOnly(true);
       editorOutput.setOptions({
       maxLines: Infinity,

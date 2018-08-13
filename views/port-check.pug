@@ -33,11 +33,11 @@ block content
     form(id='1stform' action=root+'port-check' method='post')
       .columns
         .column.is-5
-          label.label(for='') Domain name / IP address:
-          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' placeholder='Domain name / IP address' autofocus='' required)
+          label.label(for='') #{__('domain-name-ip-address')}:
+          input#address.input.is-success(name='address' onkeyup='getVal()' type='text' autofocus='' required, placeholder=__('domain-name-ip-address'))
         .column.is-5
-          label.label(for='') Port:
-          input#port.input.is-success(name='port' onkeyup='getVal()' type='number' placeholder='Port' required)
+          label.label(for='') #{__('Port')}:
+          input#port.input.is-success(name='port' onkeyup='getVal()' type='number' required, placeholder=__('Port'))
         .column.is-2
           label.label.is-invisible(for='') Submit
           input#submit.button.is-warning.is-inverted.is-pulled-right(type='submit' value='Check')

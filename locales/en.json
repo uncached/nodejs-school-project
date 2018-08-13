@@ -1,0 +1,15 @@
+{
+	"your-ip-address-is": "Your IP address is",
+	"you-are-using": "You are using",
+	"check-out-latest-version": "Check out latest version",
+	"here": "here",
+	"Check": "Check",
+	"Minify": "Minify",
+	"Unminify": "Unminify",
+	
+	"port-check-title": "Port check",
+	"port-check-name": "Port check tool",
+	"port-check-description": "Check if TCP port is open or closed",
+	"domain-name-ip-address": "Domain name / IP address",
+	"Port": "Port"
+}

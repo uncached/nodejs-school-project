@@ -1,20 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var bodyParser = require('body-parser');
-const isPortReachable = require('is-port-reachable');
 
 router.get('/', function(req, res, next) {
-  res.render('port-check', { title: 'Port check', tool_name: 'Port check tool', tool_des: 'Check if TCP port is open or closed' });
+  res.render('port-check', { title: res.__('port-check-title'), tool_name: res.__('port-check-name'), tool_des: res.__('port-check-description') });
 });
 
 router.post('/', function(req, res) {
-    if (req.body.address==''||req.body.port=='') res.send(304);
-    else isPortReachable(req.body.port, {host: req.body.address}).then(reachable => {
-	console.log(reachable);
-	var stt;
-	if (reachable) stt=true;
-    res.render('port-check', { title: 'Ping port', tool_name: 'Ping port tool', tool_des: 'Check if TCP port is open or closed', input: req.body, stt: stt });
-    });
+    var addr = req.body.address;
+    if (addr==''||req.body.port=='') res.sendStatus(304);
+    else {
+      const isPortReachable = require('is-port-reachable');
+      isPortReachable(req.body.port, {host: addr}).then(reachable => {
+      var stt;
+      if (reachable) stt=true;
+      res.render('port-check', { title: res.__('port-check-title'), tool_name: res.__('port-check-name'), tool_des: res.__('port-check-description'), input: req.body, stt: stt });
+      });
+    }
 });
 
 module.exports = router;
